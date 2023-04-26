@@ -22,7 +22,6 @@ from .flow import (
     syncify,
 )
 
-
 def serve_locally(module: Union[str, List[str]], port: int = 8080):
     sys.path.append(os.getcwd())
     f_yaml = get_flow_yaml(module, jcloud=False, port=port)

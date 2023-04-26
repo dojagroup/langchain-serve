@@ -188,6 +188,10 @@ def push_app_to_hubble(
 
     from .backend.playground.utils.helper import get_random_name
 
+    import sys
+    print('CUSTOM LC')
+    sys.path.append('/Users/zacli/Code/skyrim/lang')
+
     try:
         _add_to_path()
         app = import_module(mod)
@@ -241,7 +245,7 @@ def push_app_to_hubble(
     # Create the Dockerfile
     with open(os.path.join(tmpdir, 'Dockerfile'), 'w') as f:
         dockerfile = [
-            f'FROM jinawolf/serving-gateway:{version}',
+            f'FROM jinawolf/serving-gateway:0.0.1',
             'COPY . /appdir/',
             'RUN if [ -e /appdir/requirements.txt ]; then pip install -r /appdir/requirements.txt; fi',
             'ENTRYPOINT [ "jina", "gateway", "--uses", "config.yml" ]',
@@ -433,6 +437,7 @@ def get_flow_dict(
         module = [module]
 
     uses = get_gateway_uses(id=gateway_id) if jcloud else get_gateway_config_yaml_path()
+
     return {
         'jtype': 'Flow',
         **(get_with_args_for_jcloud() if jcloud else {}),

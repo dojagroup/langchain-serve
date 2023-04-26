@@ -261,9 +261,14 @@ class ServingGateway(FastAPIBaseGateway):
         from fastapi import FastAPI
 
         super().__init__(*args, **kwargs)
-        self.logger.debug(f'Loading modules/files: {",".join(modules)}')
+        self.logger.info(f'Loading modules/files zac222: {",".join(modules)}')
         self._fix_sys_path()
         self._app = FastAPI()
+
+        self.tracing = True
+        from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+        FastAPIInstrumentor.instrument_app(self._app, tracer_provider=self.tracer_provider)
+
         self._register_healthz()
         for mod in modules:
             # TODO: add support for registering a directory
